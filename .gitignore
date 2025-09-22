@@ -1,2 +1,7 @@
+.DS_Store
+Thumbs.db
+.phpunit.cache
 .phpunit.result.cache
-vendor
+/.idea
+/.vscode
+/vendor
