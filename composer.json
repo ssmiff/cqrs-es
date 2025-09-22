@@ -1,0 +1,27 @@
+{
+    "name": "ssmiff/cqrs-es",
+    "description": "CQRS (Command Query Responsibility Segregation) and Event Sourcing",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "require": {
+        "php": "^8.4",
+        "psr/clock": "^1.0",
+        "ramsey/uuid": "^4.7",
+        "webmozart/assert": "^1.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ssmiff\\CqrsEs\\": "src/",
+            "Ssmiff\\CqrsEs\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.1",
+        "psr/log": "^3.0",
+        "mockery/mockery": "^1.6"
+    },
+    "suggest": {
+        "psr/log-implementation": "Implementation for PSR3, LoggerInterface"
+    }
+}
