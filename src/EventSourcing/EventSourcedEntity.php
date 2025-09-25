@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ssmiff\CqrsEs\EventSourcing;
 
-use Ssmiff\CqrsEs\HandleMethodInflector\HandleMethodInflector;
+use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
 use Ssmiff\CqrsEs\EventSourcing\Exception\AggregateRootAlreadyRegisteredException;
 
 interface EventSourcedEntity
@@ -16,6 +16,6 @@ interface EventSourcedEntity
      */
     public function registerAggregateRoot(
         EventSourcedAggregateRoot $aggregateRoot,
-        HandleMethodInflector $handleMethodInflector,
+        MethodInflector $handleMethodInflector,
     ): void;
 }

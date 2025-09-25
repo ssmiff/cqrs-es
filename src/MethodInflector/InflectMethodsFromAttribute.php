@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ssmiff\CqrsEs\HandleMethodInflector;
+namespace Ssmiff\CqrsEs\MethodInflector;
 
 use ReflectionClass;
 use ReflectionMethod;
 use Ssmiff\CqrsEs\Attributes\EventHandler;
 
-class InflectHandlerMethodsFromAttribute implements HandleMethodInflector
+class InflectMethodsFromAttribute implements MethodInflector
 {
     public function handleMethods(object $eventListener, object $event): array
     {

@@ -16,7 +16,7 @@ class ReliableEventBus implements EventBus
 
     protected function handleEvent(EventListener $eventListener, DomainEvent $event): void
     {
-        if ($eventListener instanceof ProcessorEventListener && false === ProcessorsEnabled::isEnabled()) {
+        if ($eventListener instanceof Reactor && false === ReactorsEnabled::isEnabled()) {
             $this->logger->debug(
                 sprintf(
                     '[Event Listener]: %s, skipped as processors are disabled',

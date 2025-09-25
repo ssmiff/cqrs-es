@@ -28,4 +28,16 @@ class SerializationExceptionTest extends TestCase
         $this->assertInstanceOf(RuntimeException::class, $exception);
         $this->assertSame($expectedMessage, $exception->getMessage());
     }
+
+    public function testClassDoesntExistCreatesException(): void
+    {
+        $className = 'Missing\\ClassName';
+        $expectedMessage = sprintf("Object class '%s' does not exist", $className);
+
+        $exception = SerializationException::classDoesntExist($className);
+
+        $this->assertInstanceOf(SerializationException::class, $exception);
+        $this->assertInstanceOf(RuntimeException::class, $exception);
+        $this->assertSame($expectedMessage, $exception->getMessage());
+    }
 }

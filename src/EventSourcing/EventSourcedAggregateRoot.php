@@ -8,12 +8,12 @@ use Exception;
 use Ssmiff\CqrsEs\Aggregate\AggregateRoot;
 use Ssmiff\CqrsEs\DomainEvent;
 use Ssmiff\CqrsEs\DomainEventStream;
-use Ssmiff\CqrsEs\HandleMethodInflector\HandleMethodInflector;
-use Ssmiff\CqrsEs\HandleMethodInflector\InflectHandlerMethodsFromAttribute;
+use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
+use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromAttribute;
 
 abstract class EventSourcedAggregateRoot implements AggregateRoot
 {
-    protected ?HandleMethodInflector $handleMethodInflector = null;
+    protected ?MethodInflector $methodInflector = null;
 
     /**
      * @var array<DomainEvent>
@@ -85,9 +85,9 @@ abstract class EventSourcedAggregateRoot implements AggregateRoot
         }
     }
 
-    private function getHandleMethodInflector(): HandleMethodInflector
+    private function getHandleMethodInflector(): MethodInflector
     {
-        return $this->handleMethodInflector ?? new InflectHandlerMethodsFromAttribute();
+        return $this->methodInflector ?? new InflectMethodsFromAttribute();
     }
 
     /**

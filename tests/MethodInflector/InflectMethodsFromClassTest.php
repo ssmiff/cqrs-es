@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace HandleMethodInflector;
+namespace MethodInflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ssmiff\CqrsEs\HandleMethodInflector\HandleMethodInflector;
-use Ssmiff\CqrsEs\HandleMethodInflector\InflectHandlerMethodsFromClass;
+use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
+use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromClass;
 use Ssmiff\CqrsEs\Tests\Stubs\SomeEvent;
 
-#[CoversClass(InflectHandlerMethodsFromClass::class)]
-class InflectHandlerMethodsFromClassTest extends TestCase
+#[CoversClass(InflectMethodsFromClass::class)]
+class InflectMethodsFromClassTest extends TestCase
 {
-    private InflectHandlerMethodsFromClass $inflector;
+    private InflectMethodsFromClass $inflector;
 
     protected function setUp(): void
     {
-        $this->inflector = new InflectHandlerMethodsFromClass();
+        $this->inflector = new InflectMethodsFromClass();
     }
 
     public function testInstanceOfHandleMethodInflector(): void
     {
-        $this->assertInstanceOf(HandleMethodInflector::class, $this->inflector);
+        $this->assertInstanceOf(MethodInflector::class, $this->inflector);
     }
 
     public function testReturnsMethodNameWhenMethodExists(): void

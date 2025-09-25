@@ -14,7 +14,7 @@ use function in_array;
 
 readonly class SimpleInterfaceSerializer implements Serializer
 {
-    public function __construct(private ClassNameInflector $classNameInflector) {}
+    public function __construct(protected ClassNameInflector $classNameInflector) {}
 
     public function serialize($object): array
     {

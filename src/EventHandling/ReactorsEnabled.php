@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ssmiff\CqrsEs\EventHandling;
 
-final class ProcessorsEnabled
+final class ReactorsEnabled
 {
     private static bool $isEnabled = true;
 

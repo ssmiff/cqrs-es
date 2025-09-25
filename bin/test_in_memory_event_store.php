@@ -66,7 +66,7 @@ class UserAggregateRoot extends EventSourcedAggregateRoot
     private string $name;
 
     public function __construct() {
-        $this->handleMethodInflector = new \Ssmiff\CqrsEs\HandleMethodInflector\InflectHandlerMethodsFromReflection();
+        $this->methodInflector = new \Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromReflection();
     }
 
     public function getAggregateRootId(): AggregateRootId

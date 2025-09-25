@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace HandleMethodInflector;
+namespace MethodInflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ssmiff\CqrsEs\HandleMethodInflector\HandleMethodInflector;
-use Ssmiff\CqrsEs\HandleMethodInflector\InflectHandlerMethodsFromReflection;
+use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
+use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromReflection;
 use Ssmiff\CqrsEs\Tests\Stubs\EventImplementingInterface;
 use Ssmiff\CqrsEs\Tests\Stubs\OtherEvent;
 use Ssmiff\CqrsEs\Tests\Stubs\SomeEvent;
 use Ssmiff\CqrsEs\Tests\Stubs\SomeInterface;
 
-#[CoversClass(InflectHandlerMethodsFromReflection::class)]
-class InflectHandlerMethodsFromReflectionTest extends TestCase
+#[CoversClass(InflectMethodsFromReflection::class)]
+class InflectMethodsFromReflectionTest extends TestCase
 {
-    private InflectHandlerMethodsFromReflection $inflector;
+    private InflectMethodsFromReflection $inflector;
 
     protected function setUp(): void
     {
-        $this->inflector = new InflectHandlerMethodsFromReflection();
+        $this->inflector = new InflectMethodsFromReflection();
     }
 
     public function testInstanceOfHandleMethodInflector(): void
     {
-        $this->assertInstanceOf(HandleMethodInflector::class, $this->inflector);
+        $this->assertInstanceOf(MethodInflector::class, $this->inflector);
     }
 
     public function testItFindsMatchingMethodsWithNamedType(): void

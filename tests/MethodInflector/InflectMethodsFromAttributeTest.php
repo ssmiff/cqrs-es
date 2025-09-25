@@ -7,24 +7,24 @@ namespace Ssmiff\CqrsEs\Tests\HandleMethodInflector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\Attributes\EventHandler;
-use Ssmiff\CqrsEs\HandleMethodInflector\HandleMethodInflector;
-use Ssmiff\CqrsEs\HandleMethodInflector\InflectHandlerMethodsFromAttribute;
+use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
+use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromAttribute;
 use Ssmiff\CqrsEs\Tests\Stubs\OtherEvent;
 use Ssmiff\CqrsEs\Tests\Stubs\SomeEvent;
 
-#[CoversClass(InflectHandlerMethodsFromAttribute::class)]
-class InflectHandlerMethodsFromAttributeTest extends TestCase
+#[CoversClass(InflectMethodsFromAttribute::class)]
+class InflectMethodsFromAttributeTest extends TestCase
 {
-    private InflectHandlerMethodsFromAttribute $inflector;
+    private InflectMethodsFromAttribute $inflector;
 
     protected function setUp(): void
     {
-        $this->inflector = new InflectHandlerMethodsFromAttribute();
+        $this->inflector = new InflectMethodsFromAttribute();
     }
 
     public function testInstanceOfHandleMethodInflector(): void
     {
-        $this->assertInstanceOf(HandleMethodInflector::class, $this->inflector);
+        $this->assertInstanceOf(MethodInflector::class, $this->inflector);
     }
 
     public function testItFindsMethodsWithMatchingEventHandlerAttribute(): void

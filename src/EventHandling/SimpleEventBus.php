@@ -12,7 +12,7 @@ class SimpleEventBus implements EventBus
 
     protected function handleEvent(EventListener $eventListener, DomainEvent $event): void
     {
-        if ($eventListener instanceof ProcessorEventListener && false === ProcessorsEnabled::isEnabled()) {
+        if ($eventListener instanceof Reactor && false === ReactorsEnabled::isEnabled()) {
             return;
         }
 

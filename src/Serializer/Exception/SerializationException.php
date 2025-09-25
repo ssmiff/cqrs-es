@@ -16,4 +16,12 @@ final class SerializationException extends RuntimeException
             [$object, Serializable::class],
         );
     }
+
+    public static function classDoesntExist(string $object): self
+    {
+        return new self(
+            'Object class \'%s\' does not exist',
+            [$object],
+        );
+    }
 }

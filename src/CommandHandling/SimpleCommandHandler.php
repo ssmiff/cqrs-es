@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Ssmiff\CqrsEs\CommandHandling;
 
-use Ssmiff\CqrsEs\HandleMethodInflector\HandleMethodInflector;
-use Ssmiff\CqrsEs\HandleMethodInflector\InflectHandlerMethodsFromAttribute;
+use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
+use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromAttribute;
 
 abstract class SimpleCommandHandler implements CommandHandler
 {
-    protected ?HandleMethodInflector $handleMethodInflector = null;
+    protected ?MethodInflector $handleMethodInflector = null;
 
     public function handle(object $command): void
     {
@@ -22,8 +22,8 @@ abstract class SimpleCommandHandler implements CommandHandler
         }
     }
 
-    private function getHandleMethodInflector(): HandleMethodInflector
+    private function getHandleMethodInflector(): MethodInflector
     {
-        return $this->handleMethodInflector ?? new InflectHandlerMethodsFromAttribute();
+        return $this->handleMethodInflector ?? new InflectMethodsFromAttribute();
     }
 }
