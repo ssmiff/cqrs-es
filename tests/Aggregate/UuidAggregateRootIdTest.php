@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\UuidFactory;
@@ -19,7 +20,8 @@ use Ramsey\Uuid\Uuid;
 #[CoversClass(UuidAggregateRootId::class)]
 class UuidAggregateRootIdTest extends TestCase
 {
-    public function testNewReturnsExpectedUuidAggregateRootId(): void
+    #[Test]
+    public function new_returns_expected_uuid_aggregate_root_id(): void
     {
         $testUuid = Uuid::uuid7();
 
@@ -44,7 +46,8 @@ class UuidAggregateRootIdTest extends TestCase
         $this->assertSame((string) $testUuid, (string) $aggregateRootId);
     }
 
-    public function testFromStringAndToStringReturnTheSame(): void
+    #[Test]
+    public function from_string_and_to_string_return_the_same(): void
     {
         $id = 'a1b2c3d4-e5f6-7890-1234-567890abcdef';
         $aggregateRootId = UuidAggregateRootId::fromString($id);
@@ -53,7 +56,8 @@ class UuidAggregateRootIdTest extends TestCase
         $this->assertSame($id, (string) $aggregateRootId);
     }
 
-    public function testEqualsReturnsExpected(): void
+    #[Test]
+    public function equals_returns_expected(): void
     {
         $aggregateRootId1 = UuidAggregateRootId::new();
         $aggregateRootId2 = UuidAggregateRootId::new();

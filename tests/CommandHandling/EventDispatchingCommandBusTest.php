@@ -6,6 +6,7 @@ namespace Ssmiff\CqrsEs\Tests\CommandHandling;
 
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\CommandHandling\EventDispatchingCommandBus;
 use Ssmiff\CqrsEs\CommandHandling\SimpleCommandBus;
@@ -15,7 +16,8 @@ use Ssmiff\CqrsEs\EventDispatcher\CallableEventDispatcher;
 #[CoversClass(EventDispatchingCommandBus::class)]
 final class EventDispatchingCommandBusTest extends TestCase
 {
-    public function testSuccessEventIsDispatchedAfterHandling(): void
+    #[Test]
+    public function success_event_is_dispatched_after_handling(): void
     {
         $inner = new SimpleCommandBus();
         $dispatcher = new CallableEventDispatcher();
@@ -43,7 +45,8 @@ final class EventDispatchingCommandBusTest extends TestCase
         self::assertTrue($handled);
     }
 
-    public function testFailureEventIsDispatchedAndExceptionIsRethrown(): void
+    #[Test]
+    public function failure_event_is_dispatched_and_exception_is_rethrown(): void
     {
         $inner = new SimpleCommandBus();
         $dispatcher = new CallableEventDispatcher();

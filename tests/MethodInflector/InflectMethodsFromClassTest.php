@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MethodInflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
 use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromClass;
@@ -20,12 +21,14 @@ class InflectMethodsFromClassTest extends TestCase
         $this->inflector = new InflectMethodsFromClass();
     }
 
-    public function testInstanceOfHandleMethodInflector(): void
+    #[Test]
+    public function instance_of_handle_method_inflector(): void
     {
         $this->assertInstanceOf(MethodInflector::class, $this->inflector);
     }
 
-    public function testReturnsMethodNameWhenMethodExists(): void
+    #[Test]
+    public function it_returns_method_name_when_method_exists(): void
     {
         $eventListener = new class {
             public function applySomeEvent(): void {}
@@ -38,7 +41,8 @@ class InflectMethodsFromClassTest extends TestCase
         $this->assertSame(['applySomeEvent'], $methods);
     }
 
-    public function testReturnsNullWhenMethodDoesNotExist(): void
+    #[Test]
+    public function it_returns_null_when_method_does_not_exist(): void
     {
         $eventListener = new class {
             // no applyXxx method

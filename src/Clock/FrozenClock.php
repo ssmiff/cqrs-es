@@ -18,7 +18,21 @@ final class FrozenClock implements ClockInterface
 
     public static function fromFormattedString(string $format, string $datetime): self
     {
-        return new self(DateTimeImmutable::createFromFormat($format, $datetime, new DateTimeZone('UTC')));
+        // Try provided format first
+        $dt = DateTimeImmutable::createFromFormat($format, $datetime, new DateTimeZone('UTC'));
+
+        // If parsing failed (e.g., literal 'T' not escaped), try escaping 'T' characters
+        if ($dt === false) {
+            $escapedFormat = str_replace('T', '\\T', $format);
+            $dt = DateTimeImmutable::createFromFormat($escapedFormat, $datetime, new DateTimeZone('UTC'));
+        }
+
+        // As a final fallback, try constructing from the datetime string directly (ISO 8601 etc.)
+        if ($dt === false) {
+            $dt = new DateTimeImmutable($datetime, new DateTimeZone('UTC'));
+        }
+
+        return new self($dt);
     }
 
     /**

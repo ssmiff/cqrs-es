@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MethodInflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
 use Ssmiff\CqrsEs\MethodInflector\InflectMethodsFromReflection;
@@ -23,12 +24,14 @@ class InflectMethodsFromReflectionTest extends TestCase
         $this->inflector = new InflectMethodsFromReflection();
     }
 
-    public function testInstanceOfHandleMethodInflector(): void
+    #[Test]
+    public function instance_of_handle_method_inflector(): void
     {
         $this->assertInstanceOf(MethodInflector::class, $this->inflector);
     }
 
-    public function testItFindsMatchingMethodsWithNamedType(): void
+    #[Test]
+    public function it_finds_matching_methods_with_named_type(): void
     {
         $eventListener = new class {
             public function onEvent(SomeEvent $event): void {}
@@ -45,7 +48,8 @@ class InflectMethodsFromReflectionTest extends TestCase
         $this->assertEquals(['onEvent'], $methods, 'Should only match methods accepting SomeEvent.');
     }
 
-    public function testItFindsMethodsWithUnionType(): void
+    #[Test]
+    public function it_finds_methods_with_union_type(): void
     {
         $eventListener = new class {
             public function onEvent(SomeEvent|OtherEvent $event): void {}
@@ -60,7 +64,8 @@ class InflectMethodsFromReflectionTest extends TestCase
         $this->assertEquals(['onEvent'], $methods, 'Should match methods accepting SomeEvent via a union type.');
     }
 
-    public function testItFindsMethodsWithIntersectionType(): void
+    #[Test]
+    public function it_finds_methods_with_intersection_type(): void
     {
         $eventListener = new class {
             public function onEvent(EventImplementingInterface&SomeInterface $event): void {}
@@ -77,7 +82,8 @@ class InflectMethodsFromReflectionTest extends TestCase
             'Should match methods accepting SomeEvent via an intersection type.');
     }
 
-    public function testItReturnsEmptyArrayForNoMatches(): void
+    #[Test]
+    public function it_returns_empty_array_for_no_matches(): void
     {
         $eventListener = new class {
             public function unrelatedMethod(string $param): void {}

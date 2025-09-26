@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Tests\HandleMethodInflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\Attributes\EventHandler;
 use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
@@ -22,12 +23,14 @@ class InflectMethodsFromAttributeTest extends TestCase
         $this->inflector = new InflectMethodsFromAttribute();
     }
 
-    public function testInstanceOfHandleMethodInflector(): void
+    #[Test]
+    public function test_instance_of_handle_method_inflector(): void
     {
         $this->assertInstanceOf(MethodInflector::class, $this->inflector);
     }
 
-    public function testItFindsMethodsWithMatchingEventHandlerAttribute(): void
+    #[Test]
+    public function it_finds_methods_with_matching_event_handler_attribute(): void
     {
         $eventListener = new class {
             #[EventHandler(SomeEvent::class)]
@@ -50,7 +53,8 @@ class InflectMethodsFromAttributeTest extends TestCase
         );
     }
 
-    public function testItFindsNoMethodsWhenNoMatchingAttributesExist(): void
+    #[Test]
+    public function it_finds_no_methods_when_no_matching_attributes_exist(): void
     {
         $eventListener = new class {
             #[EventHandler(OtherEvent::class)]
@@ -66,7 +70,8 @@ class InflectMethodsFromAttributeTest extends TestCase
         $this->assertEmpty($methods, 'Should return an empty array when no EventHandler attribute matches the event.');
     }
 
-    public function testItHandlesMultipleMatchingMethods(): void
+    #[Test]
+    public function it_handles_multiple_matching_methods(): void
     {
         $eventListener = new class {
             #[EventHandler(SomeEvent::class)]

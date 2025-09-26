@@ -152,10 +152,14 @@ abstract class EventStoreTest extends TestCase
     }
 
     protected function createDomainMessage(
-        AggregateRootId $id,
+        AggregateRootId|int $id,
         int $version,
         ?ClockInterface $recordedOn = null
     ): DomainEvent {
+        if (!$id instanceof AggregateRootId) {
+            $id = UuidAggregateRootId::new();
+        }
+
         return new DomainEvent(
             $id,
             $version,

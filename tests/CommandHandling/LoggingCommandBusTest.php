@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Tests\CommandHandling;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ssmiff\CqrsEs\CommandHandling\CommandHandler;
@@ -14,7 +15,8 @@ use Throwable;
 #[CoversClass(LoggingCommandBus::class)]
 final class LoggingCommandBusTest extends TestCase
 {
-    public function testItLogsErrorWhenHandlerThrowsAndRethrows(): void
+    #[Test]
+    public function it_logs_error_when_handler_throws_and_rethrows(): void
     {
         $logger = new class implements LoggerInterface {
             public array $errors = [];
@@ -54,7 +56,8 @@ final class LoggingCommandBusTest extends TestCase
         self::assertSame('kaboom', $context['exception']->getMessage());
     }
 
-    public function testItDoesNotLogErrorWhenNoException(): void
+    #[Test]
+    public function it_does_not_log_error_when_no_exception(): void
     {
         $logger = new class implements LoggerInterface {
             public array $errors = [];

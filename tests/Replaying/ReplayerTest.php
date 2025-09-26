@@ -7,6 +7,7 @@ namespace Ssmiff\CqrsEs\Tests\Replaying;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\Replaying\Replayer;
 use Ssmiff\CqrsEs\EventStore\Visitor\Criteria;
@@ -18,7 +19,8 @@ class ReplayerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testReplayCallsVisitEventsOnEventStore(): void
+    #[Test]
+    public function replay_calls_visit_events_on_event_store(): void
     {
         // Create mocks with Mockery
         $eventStoreMock = Mockery::mock(VisitsEvents::class);

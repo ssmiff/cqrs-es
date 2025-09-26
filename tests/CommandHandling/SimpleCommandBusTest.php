@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Tests\CommandHandling;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\CommandHandling\CommandBus;
 use Ssmiff\CqrsEs\CommandHandling\CommandHandler;
@@ -13,7 +14,8 @@ use Ssmiff\CqrsEs\CommandHandling\SimpleCommandBus;
 #[CoversClass(SimpleCommandBus::class)]
 final class SimpleCommandBusTest extends TestCase
 {
-    public function testItDispatchesToAllSubscribedHandlers(): void
+    #[Test]
+    public function it_dispatches_to_all_subscribed_handlers(): void
     {
         $bus = new SimpleCommandBus();
 
@@ -22,11 +24,19 @@ final class SimpleCommandBusTest extends TestCase
 
         $handlerA = new class($receivedA) implements CommandHandler {
             public function __construct(private array &$received) {}
-            public function handle(object $command): void { $this->received[] = $command; }
+
+            public function handle(object $command): void
+            {
+                $this->received[] = $command;
+            }
         };
         $handlerB = new class($receivedB) implements CommandHandler {
             public function __construct(private array &$received) {}
-            public function handle(object $command): void { $this->received[] = $command; }
+
+            public function handle(object $command): void
+            {
+                $this->received[] = $command;
+            }
         };
 
         $bus->subscribe($handlerA);
@@ -42,7 +52,8 @@ final class SimpleCommandBusTest extends TestCase
         self::assertSame([$command1, $command2], $receivedB);
     }
 
-    public function testItQueuesNestedDispatchesWithoutRecursion(): void
+    #[Test]
+    public function it_queues_nested_dispatches_without_recursion(): void
     {
         $bus = new SimpleCommandBus();
 
@@ -50,7 +61,9 @@ final class SimpleCommandBusTest extends TestCase
 
         $reentrantHandler = new class($bus, $handled) implements CommandHandler {
             public function __construct(private CommandBus $bus, private array &$handled) {}
-            public function handle(object $command): void {
+
+            public function handle(object $command): void
+            {
                 $this->handled[] = $command;
                 if (isset($command->dispatchNext)) {
                     $this->bus->dispatch((object)['name' => 'nested']);

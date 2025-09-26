@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Tests\CommandHandling;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\Attributes\EventHandler;
 use Ssmiff\CqrsEs\CommandHandling\SimpleCommandHandler;
@@ -14,7 +15,8 @@ use Ssmiff\CqrsEs\Tests\Stubs\FooCommand;
 #[CoversClass(SimpleCommandHandler::class)]
 final class SimpleCommandHandlerTest extends TestCase
 {
-    public function testItInvokesMethodsAnnotatedForCommandClass(): void
+    #[Test]
+    public function it_invokes_methods_annotated_for_command_class(): void
     {
         $handled = [];
 

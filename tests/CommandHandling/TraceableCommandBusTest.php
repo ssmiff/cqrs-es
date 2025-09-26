@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Tests\CommandHandling;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\CommandHandling\TraceableCommandBus;
 
 #[CoversClass(TraceableCommandBus::class)]
 final class TraceableCommandBusTest extends TestCase
 {
-    public function testItRecordsCommandsOnlyWhenRecordingStarted(): void
+    #[Test]
+    public function it_records_commands_only_when_recording_started(): void
     {
         $bus = new TraceableCommandBus();
 

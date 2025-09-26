@@ -6,6 +6,7 @@ namespace Ssmiff\CqrsEs\Tests\Serializer;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\Attributes\SerializableProperty;
 use Ssmiff\CqrsEs\Serializer\AttributeSerializer;
@@ -21,7 +22,8 @@ class AttributeSerializerTest extends TestCase
         $this->serializer = new AttributeSerializer();
     }
 
-    public function testSerializeIncludesOnlyAnnotatedPropertiesAndType(): void
+    #[Test]
+    public function serialize_includes_only_annotated_properties_and_type(): void
     {
         $obj = new class() {
             #[SerializableProperty]
@@ -38,7 +40,8 @@ class AttributeSerializerTest extends TestCase
         $this->assertSame(['firstName' => 'Jane', 'age' => 30], $payload);
     }
 
-    public function testDeserializeViaConstructorWhenParametersMatchAnnotatedProperties(): void
+    #[Test]
+    public function deserialize_via_constructor_when_parameters_match_annotated_properties(): void
     {
         $className = new class('Jane', 30) {
             #[SerializableProperty]
@@ -62,7 +65,8 @@ class AttributeSerializerTest extends TestCase
         $this->assertSame(30, $obj->age);
     }
 
-    public function testDeserializeSetsPropertiesDirectlyWhenConstructorNotSatisfiable(): void
+    #[Test]
+    public function deserialize_sets_properties_directly_when_constructor_not_satisfiable(): void
     {
         $className = new class('constructed') {
             #[SerializableProperty]

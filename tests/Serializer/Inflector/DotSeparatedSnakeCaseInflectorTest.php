@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Tests\Serializer\Inflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\ClassInflector\ClassNameInflector;
 use Ssmiff\CqrsEs\ClassInflector\DotSeparatedSnakeCaseInflector;
@@ -20,12 +21,14 @@ class DotSeparatedSnakeCaseInflectorTest extends TestCase
         $this->inflector = new DotSeparatedSnakeCaseInflector();
     }
 
-    public function testInstanceOfClassNameInflector(): void
+    #[Test]
+    public function instance_of_class_name_inflector(): void
     {
         $this->assertInstanceOf(ClassNameInflector::class, $this->inflector);
     }
 
-    public function testInstanceToTypeConvertsClassNameToDotSeparatedSnakeCase(): void
+    #[Test]
+    public function instance_to_type_converts_class_name_to_dot_separated_snake_case(): void
     {
         $object = new SomeEvent();
 
@@ -34,7 +37,8 @@ class DotSeparatedSnakeCaseInflectorTest extends TestCase
         $this->assertSame('ssmiff.cqrs_es.tests.stubs.some_event', $result);
     }
 
-    public function testClassNameToTypeConvertsClassNameToDotSeparatedSnakeCase(): void
+    #[Test]
+    public function class_name_to_type_converts_class_name_to_dot_separated_snake_case(): void
     {
         $className = 'Namespace\\SubNamespace\\MySampleClass';
 
@@ -44,7 +48,8 @@ class DotSeparatedSnakeCaseInflectorTest extends TestCase
         );
     }
 
-    public function testTypeToClassNameConvertsDotSeparatedSnakeCaseToClassName(): void
+    #[Test]
+    public function type_to_class_name_converts_dot_separated_snake_case_to_class_name(): void
     {
         $type = 'namespace.sub_namespace.my_sample_class';
 
@@ -54,5 +59,3 @@ class DotSeparatedSnakeCaseInflectorTest extends TestCase
         );
     }
 }
-
-class SampleTestClass {}
