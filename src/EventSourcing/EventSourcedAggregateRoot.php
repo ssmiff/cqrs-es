@@ -13,7 +13,7 @@ use Ssmiff\CqrsEs\MethodInflector\MethodInflector;
 
 abstract class EventSourcedAggregateRoot implements AggregateRoot
 {
-    protected ?MethodInflector $methodInflector = null;
+    private static ?MethodInflector $methodInflector = null;
 
     /**
      * @var array<DomainEvent>
@@ -69,14 +69,14 @@ abstract class EventSourcedAggregateRoot implements AggregateRoot
         $this->handle($eventPayload);
 
         foreach ($this->getChildEntities() as $entity) {
-            $entity->registerAggregateRoot($this, $this->getHandleMethodInflector());
+            $entity->registerAggregateRoot($this, self::getHandleMethodInflector());
             $entity->handleRecursively($eventPayload);
         }
     }
 
     protected function handle(object $event): void
     {
-        $methods = $this->getHandleMethodInflector()->handleMethods($this, $event);
+        $methods = self::getHandleMethodInflector()->handleMethods($this, $event);
 
         foreach ($methods as $method) {
             if (method_exists($this, $method)) {
@@ -85,9 +85,14 @@ abstract class EventSourcedAggregateRoot implements AggregateRoot
         }
     }
 
-    private function getHandleMethodInflector(): MethodInflector
+    public static function setHandleMethodInflector(MethodInflector $methodInflector): void
     {
-        return $this->methodInflector ?? new InflectMethodsFromClass();
+        static::$methodInflector = $methodInflector;
+    }
+
+    private static function getHandleMethodInflector(): MethodInflector
+    {
+        return static::$methodInflector ?? new InflectMethodsFromClass();
     }
 
     /**
