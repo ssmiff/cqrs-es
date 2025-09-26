@@ -15,7 +15,7 @@ namespace Ssmiff\CqrsEs\Serializer\Testing;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Ssmiff\CqrsEs\Serializer\Inflector\SimpleInflector;
+use Ssmiff\CqrsEs\ClassInflector\SimpleInflector;
 use Ssmiff\CqrsEs\Serializer\Serializable;
 use Ssmiff\CqrsEs\Serializer\SimpleInterfaceSerializer;
 
@@ -25,19 +25,19 @@ use Ssmiff\CqrsEs\Serializer\SimpleInterfaceSerializer;
 abstract class SerializableEventTestCase extends TestCase
 {
     #[Test]
-    public function its_serializable(): void
+    public function itsSerializable(): void
     {
         $this->assertInstanceOf(Serializable::class, $this->createEvent());
     }
 
     #[Test]
-    public function serializing_and_deserializing_yields_the_same_object(): void
+    public function serializingAndDeserializingYieldsTheSameObject(): void
     {
-        $serializer = new SimpleInterfaceSerializer(new SimpleInflector());
+        $serializer = new SimpleInterfaceSerializer();
         $event = $this->createEvent();
 
         $serialized = $serializer->serialize($event);
-        $deserialized = $serializer->deserialize($serialized);
+        $deserialized = $serializer->deserialize($serialized, $event::class);
 
         $this->assertEquals($event, $deserialized);
     }

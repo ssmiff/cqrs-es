@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Ssmiff\CqrsEs\Attributes\SerializableProperty;
 use Ssmiff\CqrsEs\Serializer\AttributeSerializer;
 use Ssmiff\CqrsEs\Serializer\Exception\SerializationException;
-use Ssmiff\CqrsEs\Serializer\Inflector\SimpleInflector;
 
 #[CoversClass(AttributeSerializer::class)]
 class AttributeSerializerTest extends TestCase
@@ -19,7 +18,7 @@ class AttributeSerializerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->serializer = new AttributeSerializer(new SimpleInflector());
+        $this->serializer = new AttributeSerializer();
     }
 
     public function testSerializeIncludesOnlyAnnotatedPropertiesAndType(): void
@@ -34,38 +33,9 @@ class AttributeSerializerTest extends TestCase
             public string $ignoreMe = 'nope';
         };
 
-        $result = $this->serializer->serialize($obj);
+        $payload = $this->serializer->serialize($obj);
 
-        $this->assertSame($obj::class, $result['type']);
-        $this->assertSame(['firstName' => 'Jane', 'age' => 30], $result['payload']);
-        $this->assertArrayNotHasKey('ignoreMe', $result['payload']);
-    }
-
-    public function testDeserializeThrowsIfTypeMissing(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Key 'type' should be set.");
-
-        $this->serializer->deserialize(['payload' => []]);
-    }
-
-    public function testDeserializeThrowsIfPayloadMissing(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Key 'payload' should be set.");
-
-        $this->serializer->deserialize(['type' => 'Some\\Class']);
-    }
-
-    public function testDeserializeThrowsIfClassDoesNotExist(): void
-    {
-        $this->expectException(SerializationException::class);
-        $this->expectExceptionMessage('does not exist');
-
-        $this->serializer->deserialize([
-            'type' => 'Some\\Totally\\MissingClass',
-            'payload' => [],
-        ]);
+        $this->assertSame(['firstName' => 'Jane', 'age' => 30], $payload);
     }
 
     public function testDeserializeViaConstructorWhenParametersMatchAnnotatedProperties(): void
@@ -84,12 +54,9 @@ class AttributeSerializerTest extends TestCase
             }
         };
 
-        $serialized = [
-            'type' => $className::class,
-            'payload' => ['firstName' => 'Jane', 'age' => 30],
-        ];
+        $payload = ['firstName' => 'Jane', 'age' => 30];
 
-        $obj = $this->serializer->deserialize($serialized);
+        $obj = $this->serializer->deserialize($payload, $className::class);
 
         $this->assertSame('Jane', $obj->firstName);
         $this->assertSame(30, $obj->age);
@@ -113,12 +80,9 @@ class AttributeSerializerTest extends TestCase
             }
         };
 
-        $serialized = [
-            'type' => $className::class,
-            'payload' => ['firstName' => 'John', 'age' => 42],
-        ];
+        $payload = ['firstName' => 'John', 'age' => 42];
 
-        $obj = $this->serializer->deserialize($serialized);
+        $obj = $this->serializer->deserialize($payload, $className::class);
 
         // Falls back to newInstanceWithoutConstructor; properties set directly
         $this->assertSame('John', $obj->firstName);

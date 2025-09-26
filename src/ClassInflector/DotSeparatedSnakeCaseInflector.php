@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ssmiff\CqrsEs\Serializer\Inflector;
+namespace Ssmiff\CqrsEs\ClassInflector;
 
 use function get_class;
 use function preg_replace;

@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace Ssmiff\CqrsEs\Serializer;
 
 use ReflectionClass;
+use ReflectionException;
 use Ssmiff\CqrsEs\Attributes\SerializableProperty;
 use Ssmiff\CqrsEs\Serializer\Exception\SerializationException;
-use Ssmiff\CqrsEs\Serializer\Inflector\ClassNameInflector;
-use Webmozart\Assert\Assert;
 
 readonly class AttributeSerializer implements Serializer
 {
-    public function __construct(
-        protected ClassNameInflector $classNameInflector,
-    ) {}
-
-    public function serialize($object): array
+    public function serialize(object $object): array
     {
         $refClass = new ReflectionClass($object);
         $payload = [];
@@ -28,24 +23,24 @@ readonly class AttributeSerializer implements Serializer
             }
         }
 
-        return [
-            'type' => $this->classNameInflector->instanceToType($object),
-            'payload' => $payload,
-        ];
+        return $payload;
     }
 
-    public function deserialize(array $serializedObject): object
+    /**
+     * @param array $payload
+     * @param class-string $objectType
+     *
+     * @return object
+     *
+     * @throws ReflectionException
+     */
+    public function deserialize(array $payload, string $objectType): object
     {
-        Assert::keyExists($serializedObject, 'type', "Key 'type' should be set.");
-        Assert::keyExists($serializedObject, 'payload', "Key 'payload' should be set.");
-
-        $className = $this->classNameInflector->typeToClassName($serializedObject['type']);
-        if (!class_exists($className)) {
-            throw SerializationException::classDoesntExist($className);
+        if (!class_exists($objectType)) {
+            throw SerializationException::classDoesntExist($objectType);
         }
 
-        $refClass = new ReflectionClass($className);
-        $payload = $serializedObject['payload'];
+        $refClass = new ReflectionClass($objectType);
 
         // Map serializedName => property
         $propertyMap = [];

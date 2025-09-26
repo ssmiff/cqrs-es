@@ -8,14 +8,14 @@ use DateTimeInterface;
 use Ssmiff\CqrsEs\Aggregate\AggregateRootId;
 use Ssmiff\CqrsEs\Clock\FrozenClock;
 use Ssmiff\CqrsEs\DomainEvent;
+use Ssmiff\CqrsEs\DomainEventStream;
 use Ssmiff\CqrsEs\EventStore\Exception\DuplicateVersionException;
 use Ssmiff\CqrsEs\EventStore\Exception\EventStreamNotFoundException;
 use Ssmiff\CqrsEs\EventStore\Visitor\Criteria;
 use Ssmiff\CqrsEs\EventStore\Visitor\EventVisitor;
 use Ssmiff\CqrsEs\EventStore\Visitor\VisitsEvents;
-use Ssmiff\CqrsEs\DomainEventStream;
+use Ssmiff\CqrsEs\ClassInflector\ClassNameInflector;
 use Ssmiff\CqrsEs\Metadata;
-use Ssmiff\CqrsEs\Serializer\Inflector\ClassNameInflector;
 use Ssmiff\CqrsEs\Serializer\Serializer;
 
 final class SerializedMemoryEventStore implements EventStore, VisitsEvents
@@ -122,14 +122,23 @@ final class SerializedMemoryEventStore implements EventStore, VisitsEvents
 
     private function serializeEvent(DomainEvent $event): array
     {
+        $payload = $event->getPayload();
+        $metaData = $event->getMetaData();
+
         return [
             'aggregateId' => [
                 'type' => $this->classNameInflector->instanceToType($event->getAggregateId()),
                 'id' => (string)$event->getAggregateId(),
             ],
             'version' => $event->getVersion(),
-            'payload' => $this->payloadSerializer->serialize($event->getPayload()),
-            'metadata' => $this->metadataSerializer->serialize($event->getMetaData()),
+            'payload' => [
+                'type' => $this->classNameInflector->instanceToType($payload),
+                'data' => $this->payloadSerializer->serialize($payload)
+            ],
+            'metadata' => [
+                'type' => $this->classNameInflector->instanceToType($metaData),
+                'data' => $this->metadataSerializer->serialize($metaData),
+            ],
             'recordedAt' => $event->getRecordedOn()->now()->format(\DateTimeInterface::ATOM),
         ];
     }
@@ -142,10 +151,13 @@ final class SerializedMemoryEventStore implements EventStore, VisitsEvents
         /** @var AggregateRootId $aggregateRootId */
         $aggregateRootId = $aggregateRootIdClass::fromString($serializedEvent['aggregateId']['id']);
 
-        $payload = $this->payloadSerializer->deserialize($serializedEvent['payload']);
+        $payloadType = $this->classNameInflector->typeToClassName($serializedEvent['payload']['type']);
+        $payload = $this->payloadSerializer->deserialize($serializedEvent['payload']['data'], $payloadType);
+
+        $metadataType = $this->classNameInflector->typeToClassName($serializedEvent['metadata']['type']);
 
         /** @var Metadata $metadata */
-        $metadata = $this->metadataSerializer->deserialize($serializedEvent['metadata']);
+        $metadata = $this->metadataSerializer->deserialize($serializedEvent['metadata']['data'], $metadataType);
 
         return new DomainEvent(
             $aggregateRootId,

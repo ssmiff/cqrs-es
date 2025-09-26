@@ -11,7 +11,7 @@ final class DuplicateVersionException extends EventStoreException
 {
     private DomainEventStream $eventStream;
 
-    public static function forEventStream(DomainEventStream $eventStream, ?Throwable $previous): self
+    public static function forEventStream(DomainEventStream $eventStream, ?Throwable $previous = null): self
     {
         $exception = new self('Duplicate version found in event stream', previous: $previous);
         $exception->eventStream = $eventStream;

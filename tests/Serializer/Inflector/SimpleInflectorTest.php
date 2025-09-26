@@ -6,8 +6,8 @@ namespace Ssmiff\CqrsEs\Tests\Serializer\Inflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ssmiff\CqrsEs\Serializer\Inflector\ClassNameInflector;
-use Ssmiff\CqrsEs\Serializer\Inflector\SimpleInflector;
+use Ssmiff\CqrsEs\ClassInflector\ClassNameInflector;
+use Ssmiff\CqrsEs\ClassInflector\SimpleInflector;
 
 #[CoversClass(SimpleInflector::class)]
 class SimpleInflectorTest extends TestCase

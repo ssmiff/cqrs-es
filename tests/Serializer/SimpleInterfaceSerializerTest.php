@@ -8,10 +8,10 @@ use InvalidArgumentException;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Ssmiff\CqrsEs\ClassInflector\ClassNameInflector;
+use Ssmiff\CqrsEs\Serializer\Exception\SerializationException;
 use Ssmiff\CqrsEs\Serializer\Serializable;
 use Ssmiff\CqrsEs\Serializer\SimpleInterfaceSerializer;
-use Ssmiff\CqrsEs\Serializer\Exception\SerializationException;
-use Ssmiff\CqrsEs\Serializer\Inflector\ClassNameInflector;
 use Ssmiff\CqrsEs\Tests\Stubs\NonSerializableClass;
 use Ssmiff\CqrsEs\Tests\Stubs\SerializableClass;
 
@@ -53,69 +53,10 @@ class SimpleInterfaceSerializerTest extends MockeryTestCase
             }
         };
 
-        // Mock behavior for instanceToType
-        $this->inflectorMock
-            ->shouldReceive('instanceToType')
-            ->once()
-            ->with($serializableObject)
-            ->andReturn('some.type');
+        $payload = $this->serializer->serialize($serializableObject);
 
-        $result = $this->serializer->serialize($serializableObject);
+        $expected = ['key' => 'value'];
 
-        $expected = [
-            'type' => 'some.type',
-            'payload' => ['key' => 'value'],
-        ];
-
-        $this->assertSame($expected, $result);
-    }
-
-    public function testUnserializeThrowsExceptionIfTypeKeyIsMissing(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Key 'type' should be set.");
-
-        $this->serializer->deserialize(['payload' => []]);
-    }
-
-    public function testUnserializeThrowsExceptionIfPayloadKeyIsMissing(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Key 'payload' should be set.");
-
-        $this->serializer->deserialize(['type' => 'some.type']);
-    }
-
-    public function testUnserializeThrowsExceptionIfClassNotSerializable(): void
-    {
-        // Mock behavior for typeToClassName
-        $this->inflectorMock
-            ->expects('typeToClassName')
-            ->with('some.type')
-            ->andReturn(NonSerializableClass::class);
-
-        $this->expectException(SerializationException::class);
-        $this->expectExceptionMessage('does not implement');
-
-        $this->serializer->deserialize([
-            'type' => 'some.type',
-            'payload' => [],
-        ]);
-    }
-
-    public function testUnserializeReturnsDeserializedObject(): void
-    {
-        // Mock behavior for typeToClassName
-        $this->inflectorMock
-            ->expects('typeToClassName')
-            ->with('some.type')
-            ->andReturn(SerializableClass::class);
-
-        $result = $this->serializer->deserialize([
-            'type' => 'some.type',
-            'payload' => ['key' => 'value'],
-        ]);
-
-        $this->assertInstanceOf(SerializableClass::class, $result);
+        $this->assertSame($expected, $payload);
     }
 }

@@ -11,7 +11,7 @@ use Ssmiff\CqrsEs\EventSourcing\AggregateFactory\PublicConstructorAggregateFacto
 use Ssmiff\CqrsEs\EventSourcing\EventSourcedAggregateRoot;
 use Ssmiff\CqrsEs\EventSourcing\EventSourcingAggregateRootRepository;
 use Ssmiff\CqrsEs\EventStore\SerializedMemoryEventStore;
-use Ssmiff\CqrsEs\Serializer\Inflector\DotSeparatedSnakeCaseInflector;
+use Ssmiff\CqrsEs\ClassInflector\DotSeparatedSnakeCaseInflector;
 use Ssmiff\CqrsEs\Serializer\Serializable;
 use Ssmiff\CqrsEs\Serializer\SimpleInterfaceSerializer;
 

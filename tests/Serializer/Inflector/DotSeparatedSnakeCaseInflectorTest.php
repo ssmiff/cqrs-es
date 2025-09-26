@@ -6,8 +6,8 @@ namespace Ssmiff\CqrsEs\Tests\Serializer\Inflector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ssmiff\CqrsEs\Serializer\Inflector\ClassNameInflector;
-use Ssmiff\CqrsEs\Serializer\Inflector\DotSeparatedSnakeCaseInflector;
+use Ssmiff\CqrsEs\ClassInflector\ClassNameInflector;
+use Ssmiff\CqrsEs\ClassInflector\DotSeparatedSnakeCaseInflector;
 use Ssmiff\CqrsEs\Tests\Stubs\SomeEvent;
 
 #[CoversClass(DotSeparatedSnakeCaseInflector::class)]

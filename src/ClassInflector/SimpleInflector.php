@@ -2,13 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ssmiff\CqrsEs\Serializer\Inflector;
-
-use function get_class;
-use function preg_replace;
-use function str_replace;
-use function strtolower;
-use function ucwords;
+namespace Ssmiff\CqrsEs\ClassInflector;
 
 class SimpleInflector implements ClassNameInflector
 {

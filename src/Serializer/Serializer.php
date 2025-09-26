@@ -11,10 +11,13 @@ interface Serializer
     /**
      * @throws SerializationException
      */
-    public function serialize($object): array;
+    public function serialize(object $object): array;
 
     /**
+     * @param array $payload
+     * @param class-string $objectType
+     *
      * @throws SerializationException
      */
-    public function deserialize(array $serializedObject): object;
+    public function deserialize(array $payload, string $objectType): object;
 }
